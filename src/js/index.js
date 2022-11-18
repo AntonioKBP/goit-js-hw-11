@@ -10,7 +10,12 @@ function getData() {
   return fetch(
     'https://pixabay.com/api/?key=31349139-c34332f5cc1455d1f889740ec&q=yellow+flowers&image_type=photo'
   )
-    .then(r => r.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('404');
+      }
+      return response.json();
+    })
     .then(data => {
       const markup = data.hits
         .map(
