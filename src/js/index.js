@@ -4,6 +4,8 @@ import debounce from 'lodash.debounce';
 
 // https://pixabay.com/api/?key=31349139-c34332f5cc1455d1f889740ec&q=yellow+flowers&image_type=photo
 
+const DEBOUNCE_TIME = 300;
+
 function getData() {
   return fetch(
     'https://pixabay.com/api/?key=31349139-c34332f5cc1455d1f889740ec&q=yellow+flowers&image_type=photo'
@@ -38,11 +40,11 @@ function getData() {
 
 const getEl = x => document.querySelector(x);
 
-inputRef.addEventListener('input', onInputChange);
+inputRef.addEventListener('input', debounce(onInputChange, DEBOUNCE_TIME));
 searchBtnRef.addEventListener('click', toMarkup);
 
 function onInputChange(e) {
-  const InputValue = e.target.value;
+  const InputValue = e.target.value.trim();
   console.log(InputValue);
 }
 
