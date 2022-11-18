@@ -1,0 +1,2 @@
+var inputRef=document.querySelector(".search-form"),searchBtnRef=document.querySelector('button[type="submit"]');function getData(){return fetch("https://pixabay.com/api/?key=31349139-c34332f5cc1455d1f889740ec&q=yellow+flowers&image_type=photo").then((function(e){return e.json()})).then((function(e){return console.log(e)}))}function onInputChange(e){console.log(e.target.value)}function toMarkup(){}getData(),inputRef.addEventListener("input",onInputChange),searchBtnRef.addEventListener("click",toMarkup);
+//# sourceMappingURL=index.f10a1683.js.map
