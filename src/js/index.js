@@ -1,10 +1,18 @@
-const inputRef = document.querySelector('.search-form').value;
-const searchBtnRef = document.querySelector('button[type="submit"]');
 import debounce from 'lodash.debounce';
 
 // https://pixabay.com/api/?key=31349139-c34332f5cc1455d1f889740ec&q=yellow+flowers&image_type=photo
 
 const DEBOUNCE_TIME = 300;
+let inputValue;
+// console.log(inputValue.value);
+// const value = inputValue.value;
+// console.log(value);
+const getEl = x => document.querySelector(x);
+getEl('input').addEventListener(
+  'input',
+  debounce(onInputChange, DEBOUNCE_TIME)
+);
+getEl('button[type="submit"]').addEventListener('click', toMarkup);
 
 function getData(text) {
   return fetch(
@@ -43,19 +51,15 @@ function getData(text) {
     });
 }
 
-const getEl = x => document.querySelector(x);
-
-// inputRef.addEventListener('input', debounce(onInputChange, DEBOUNCE_TIME));
-searchBtnRef.addEventListener('click', toMarkup);
-
 function onInputChange(e) {
-  const inputValue = e.target.value.trim();
+  inputValue = e.target.value.trim();
+  console.log(inputValue);
 }
 
 function toMarkup(e) {
   e.preventDefault();
 
-  getData(inputRef.value);
+  getData(inputValue);
 }
 
 // .then(data => {
