@@ -14,6 +14,8 @@ getEl('input').addEventListener(
 );
 getEl('button[type="submit"]').addEventListener('click', toMarkup);
 
+const loadBtn = document.querySelector('.load-more-button');
+
 function getData(text) {
   return fetch(
     `https://pixabay.com/api/?key=31349139-c34332f5cc1455d1f889740ec&q=${text}&image_type=photo`
@@ -25,6 +27,10 @@ function getData(text) {
       return response.json();
     })
     .then(data => {
+      console.log(data.total);
+      if (data.total > 20) {
+        buttonLoadMoreAvailable();
+      }
       const markup = data.hits
         .map(
           item => `<div class="photo-card">
@@ -61,6 +67,15 @@ function toMarkup(e) {
 
   getData(inputValue);
 }
+function buttonLoadMoreAvailable() {
+  loadBtn.classList.remove('is-hidden');
+}
+
+function buttonLoadMoreDisable() {
+  loadBtn.classList.add('is-hidden');
+}
+
+console.log(loadBtn);
 
 // .then(data => {
 //       const markup = data.hits
