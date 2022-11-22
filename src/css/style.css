@@ -7,17 +7,19 @@ button.is-hidden {
 }
 
 .search-form {
-  background-color: blue;
+  background-color: #6284fc;
   justify-content: center;
   display: flex;
   padding: 20px;
   margin-bottom: 30px;
+  color: antiquewhite;
+  text-decoration-color: antiquewhite;
 }
 
 .search-form__input {
   height: 24px;
   border-radius: 12px;
-  background-color: aquamarine;
+  background-color: #cef8c2;
   margin-right: 10px;
   transition: border-radius 400ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
@@ -72,6 +74,7 @@ button.is-hidden {
 
 .info {
   display: flex;
+  justify-content: center;
 }
 
 .info-item {

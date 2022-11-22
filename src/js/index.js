@@ -31,11 +31,7 @@ function getData(text) {
     .then(data => {
       console.log(data);
       // console.log(data.totalHits);
-      if (data.total > 20) {
-        buttonLoadMoreAvailable();
-        Notify.info(`Hooray! We found ${data.totalHits} images.`);
-      }
-      if (inputValue === '') {
+      if (inputValue === '' || data.total === 0) {
         resetPage();
 
         buttonLoadMoreDisable();
@@ -45,6 +41,11 @@ function getData(text) {
         return (getEl('.gallery').innerHTML = '');
       }
 
+      if (data.total > 20) {
+        buttonLoadMoreAvailable();
+        Notify.info(`Hooray! We found ${data.totalHits} images.`);
+      }
+
       const markup = data.hits
         .map(
           item => `<a class="gallery__link" href="${item.largeImageURL}" onclick="event.preventDefault()">
@@ -52,16 +53,16 @@ function getData(text) {
           <img class="small-img" src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
           <div class="info">
             <p class="info-item">
-              <b>Likes ${item.likes}</b>
+              <b>Likes: ${item.likes}</b>
             </p>
             <p class="info-item">
-              <b>Views ${item.views}</b>
+              <b>Views: ${item.views}</b>
             </p>
             <p class="info-item">
-              <b>Comments ${item.comments}</b>
+              <b>Comments: ${item.comments}</b>
             </p>
             <p class="info-item">
-              <b>Downloads ${item.downloads}</b>
+              <b>Downloads: ${item.downloads}</b>
             </p>
           </div>
         </div>`
