@@ -47,20 +47,21 @@ function getData(text) {
 
       const markup = data.hits
         .map(
-          item => `<div class="photo-card">
-          <img src="${item.previewURL}" alt="" loading="lazy" />
+          item => `<a class="gallery__link" href="${item.largeImageURL}" onclick="event.preventDefault()">
+          <div class="photo-card">
+          <img class="small-img" src="${item.webformatURL}" alt="${item.tags}" loading="lazy" />
           <div class="info">
             <p class="info-item">
-              <b>Likes${item.likes}</b>
+              <b>Likes ${item.likes}</b>
             </p>
             <p class="info-item">
-              <b>Views${item.views}</b>
+              <b>Views ${item.views}</b>
             </p>
             <p class="info-item">
-              <b>Comments${item.comments}</b>
+              <b>Comments ${item.comments}</b>
             </p>
             <p class="info-item">
-              <b>Downloads${item.downloads}</b>
+              <b>Downloads ${item.downloads}</b>
             </p>
           </div>
         </div>`
