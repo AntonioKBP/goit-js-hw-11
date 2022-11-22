@@ -1,5 +1,7 @@
 import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 // https://pixabay.com/api/?key=31349139-c34332f5cc1455d1f889740ec&q=yellow+flowers&image_type=photo
 
@@ -65,7 +67,7 @@ function getData(text) {
               <b>Downloads: ${item.downloads}</b>
             </p>
           </div>
-        </div>`
+        </div></a>`
         )
         .join('');
 
@@ -102,6 +104,11 @@ function clearAll() {
 function resetPage() {
   page = 1;
 }
+
+const lightbox = new SimpleLightbox('.gallery__link', {
+  captionsData: 'alt',
+  captionDelay: 250,
+});
 
 // .then(data => {
 //       const markup = data.hits
