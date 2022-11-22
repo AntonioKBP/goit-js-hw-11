@@ -43,9 +43,16 @@ function getData(text) {
         return (getEl('.gallery').innerHTML = '');
       }
 
-      if (data.total > 20) {
+      if (data.total > 40) {
         buttonLoadMoreAvailable();
         Notify.info(`Hooray! We found ${data.totalHits} images.`);
+      }
+
+      if (data.total < 40 && data.total !== 0) {
+        buttonLoadMoreDisable();
+        Notify.info(
+          "We're sorry, but you've reached the end of search results."
+        );
       }
 
       const markup = data.hits
