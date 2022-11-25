@@ -1,13 +1,85 @@
+import axios from 'axios';
 import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-// https://pixabay.com/api/?key=31349139-c34332f5cc1455d1f889740ec&q=yellow+flowers&image_type=photo
+const ref = {
+  form: document.querySelector('.search-form'),
+  formInput: document.querySelector('.search-form__input'),
+  searchBtn: document.querySelector('.search-btn'),
+  gallery: document.querySelector('.gallery'),
+  loadBtn: document.querySelector('.load-more-btn'),
+};
 
-// const DEBOUNCE_TIME = 300;
-// let inputValue;
-// let page = 1;
+const DEBOUNCE_TIME = 300;
+let inputValue = '';
+let page = 1;
+
+const KEY = '31349139-c34332f5cc1455d1f889740ec';
+const IMG_OPTIONS =
+  '&image_type=photo&orientation=horizontal&safesearch=true&per_page=40';
+
+ref.form.addEventListener('submit', onSubmit);
+ref.formInput.addEventListener('input', debounce(getInputValue, DEBOUNCE_TIME));
+ref.loadBtn.addEventListener('click', loadMore);
+
+function onSubmit(e) {
+  e.preventDefault();
+  clearAll();
+  page = 1;
+
+  //   if (inputValue === '') {
+  //     Notify.failure('Write anything in a search form');
+  //   }
+
+  makeResult(page);
+}
+
+function clearAll() {
+  ref.gallery.innerHTML = '';
+}
+
+function getInputValue(e) {
+  inputValue = e.target.value.trim();
+  console.log(inputValue);
+}
+
+function loadMore(e) {
+  e.preventDefault();
+  page += 1;
+}
+
+async function makeResult(page) {
+  const data = await fetchAxios(page);
+  const markup = await makeMarkup(data);
+}
+
+function makeMarkup(data) {
+  if (inputValue === '' || data.total === 0) {
+    buttonLoadMoreDisable();
+    Notify.failure(
+      'Sorry, there are no images matching your search query. Please try again.'
+    );
+  }
+}
+
+function buttonLoadMoreAvailable() {
+  ref.loadBtn.classList.remove('is-hidden');
+}
+
+function buttonLoadMoreDisable() {
+  ref.loadBtn.classList.add('is-hidden');
+}
+
+async function fetchAxios(page) {
+  let url = await axios.get(
+    `https://pixabay.com/api/?key=${KEY}&q=${inputValue}&${IMG_OPTIONS}&page=${page}`
+  );
+  const data = url.data;
+  return data;
+}
+
 // // console.log(inputValue.value);
 // // const value = inputValue.value;
 // // console.log(value);
