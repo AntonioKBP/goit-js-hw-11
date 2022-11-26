@@ -78,11 +78,11 @@ button.is-hidden {
 }
 
 .info-item {
-  margin-right: 10px;
+  margin: 10px;
 }
 
 .small-img {
   width: 100%;
-  height: 330px;
+  height: 250px;
   display: block;
 }
