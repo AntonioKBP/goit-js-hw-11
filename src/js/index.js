@@ -24,14 +24,15 @@ ref.form.addEventListener('submit', onSubmit);
 ref.formInput.addEventListener('input', debounce(getInputValue, DEBOUNCE_TIME));
 ref.loadBtn.addEventListener('click', loadMore);
 
+const lightbox = new SimpleLightbox('.gallery a', {
+  captionsData: alt,
+  captionDelay: 250,
+});
+
 function onSubmit(e) {
   e.preventDefault();
   clearAll();
   page = 1;
-
-  //   if (inputValue === '') {
-  //     Notify.failure('Write anything in a search form');
-  //   }
 
   makeResult(page);
 }
@@ -48,11 +49,13 @@ function getInputValue(e) {
 function loadMore(e) {
   e.preventDefault();
   page += 1;
+  makeResult(page);
 }
 
 async function makeResult(page) {
   const data = await fetchAxios(page);
   const markup = await makeMarkup(data);
+  lightbox.refresh();
 }
 
 function makeMarkup(data) {
@@ -61,7 +64,46 @@ function makeMarkup(data) {
     Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
+  } else if (data.total > 40) {
+    buttonLoadMoreAvailable();
+    Notify.info(`Hooray! We found ${data.totalHits} images.`);
+  } else if (data.total < 40 && data.total !== 0) {
+    buttonLoadMoreDisable();
+    Notify.info("We're sorry, but you've reached the end of search results.");
   }
+
+  const markup = data.hits
+    .map(item => {
+      return `<div class="photo-card">
+  <a
+    class="gallery__link"
+    href="${item.largeImageURL}"
+    onclick="event.preventDefault()"
+    ><img
+      class="small-img"
+      src="${item.webformatURL}"
+      alt="${item.tags}"
+      loading="lazy"
+  /></a>
+  <div class="info">
+    <p class="info-item">
+      <b>Likes: ${item.likes}</b>
+    </p>
+    <p class="info-item">
+      <b>Views: ${item.views}</b>
+    </p>
+    <p class="info-item">
+      <b>Comments: ${item.comments}</b>
+    </p>
+    <p class="info-item">
+      <b>Downloads: ${item.downloads}</b>
+    </p>
+  </div>
+</div>`;
+    })
+    .join('');
+
+  return ref.gallery.insertAdjacentHTML('beforeend', markup);
 }
 
 function buttonLoadMoreAvailable() {
